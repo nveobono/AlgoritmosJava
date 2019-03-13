@@ -5,6 +5,8 @@ public class MergeSort{
     public static void main(String[] args) {
         int[] v = {1,9,31,14,5,7,9,3};
         System.out.println("Array no ordenado: " + Arrays.toString(v));
+        int[] merger = mergeSort(v);
+        System.out.println("Ordenado: ");
     }
 
     private static int[] mergeSort(int[] v){
@@ -23,7 +25,7 @@ public class MergeSort{
     }
 
     public static int[] merge(int[] vlow, int[] vhigh){
-        int[] mix = new Array int[vlow.length + vhigh.length];
+        int[] mix = new int[vlow.length + vhigh.length];
         int i = 0;
         int j = 0;
         int k = 0;
