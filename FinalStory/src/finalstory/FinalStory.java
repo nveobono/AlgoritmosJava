@@ -20,7 +20,8 @@ public class FinalStory {
      */
    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int combates = sc.nextInt();
+        try{
+            int combates = sc.nextInt();
         for(int i = 0; i < combates; i++){
             int myATK = sc.nextInt();
             int enemies = sc.nextInt();
@@ -83,6 +84,11 @@ public class FinalStory {
                 }
             }
             System.out.println(/*"daño recibido: " + */cont);  
+        }
+        }catch(NumberFormatException e){
+            System.out.print(e);
+        }finally{
+            System.out.println("Hola Jorge");
         }
     }
     
