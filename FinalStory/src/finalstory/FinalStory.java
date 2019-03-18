@@ -24,28 +24,28 @@ public class FinalStory {
         for(int i = 0; i < combates; i++){
             int myATK = sc.nextInt();
             int enemies = sc.nextInt();
-            List<Double> enemiesATK = new ArrayList<Double>();
-            List<Double> enemiesHP = new ArrayList<Double>();
+            List<Double> enemiesATK = new ArrayList<>();
+            List<Double> enemiesHP = new ArrayList<>();
             
             Scanner scanner = new Scanner(System.in);
             String atk = scanner.nextLine();
             String[] atks = atk.split(" ");
-            for(int j = 0; j < atks.length; j++){
-                enemiesATK.add(Double.parseDouble(atks[j]));
+            for (String atk1 : atks) {
+                enemiesATK.add(Double.parseDouble(atk1));
                 //enemiesATK[j] = Integer.parseInt(atks[j]);
             }
             
             Scanner scanner1 = new Scanner(System.in);
             String hp = scanner.nextLine();
             String[] hps = hp.split(" ");
-            for(int j = 0; j < hps.length; j++){
-                enemiesHP.add(Double.parseDouble(hps[j]));
+            for (String hp1 : hps) {
+                enemiesHP.add(Double.parseDouble(hp1));
             }
             
             //ordenar
-            List<Double> ordenadoATK = new ArrayList<Double>();
-            List<Double> ordenadoHP = new ArrayList<Double>();
-            double currentTarget = 0;
+            List<Double> ordenadoATK = new ArrayList<>();
+            List<Double> ordenadoHP = new ArrayList<>();
+            double currentTarget = 0.0;
             int indice = 0;
             for(int l = 0; l < enemies; l++){
                 indice = 0;
@@ -72,7 +72,6 @@ public class FinalStory {
             }
             
             int cont = 0;
-            int indice1 = 0;
             while(!ordenadoHP.isEmpty()){
                 for(int n = 0; n < ordenadoATK.size(); n++){
                     cont += ordenadoATK.get(n);
