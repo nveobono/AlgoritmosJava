@@ -1,8 +1,11 @@
-public class IndexSearch{
 
+//indexSearch
+public class ejercicio1{
+    
     public static void main(String[] args){
         int[] v = {-3, -2, -1, 0, 1, 5};
-        int[] found = indexSearch(v);
+        
+        int found = indexSearch(v);
     }
 
     public static int indexSearch(int[] v){

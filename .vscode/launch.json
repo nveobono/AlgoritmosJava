@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - IndexSearch",
+            "request": "launch",
+            "mainClass": "IndexSearch",
+            "projectName": "AlgoritmosJava_d4d47ac0"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"
