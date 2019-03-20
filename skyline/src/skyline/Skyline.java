@@ -5,15 +5,12 @@
  */
 package skyline;
 
-import com.sun.javafx.geom.Edge;
-import java.awt.Point;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Scanner;
-import java.util.StringTokenizer;
-import java.util.TreeSet;
+
+
 
 /**
  *
@@ -24,55 +21,111 @@ public class Skyline {
     /**
      * @param args the command line arguments
      */  
-      public static void main(String[] args) {
-    Collection<Building> buildings = retrieveInput(System.in);
-
-    for (Building b : buildings) {
-      System.out.print(b.left + " " + b.right + " " + b.height);
-    }
-  }
-    
-    public static class Building {
-        final public int left;
-        final public int right;
-        final public int height;
-	
-        public Building(int left, int right, int height) {
-            this.left = left;
-            this.right = right;
-            this.height = height;
-            if (left <= 0 || right <= 0 || height <= 0 || left >= right) {
-                throw new IllegalArgumentException ("Invalid building parameters: " + left  + "," + right + "," + height);
+    public static List<int[]> getSkyline(int[][] buildings) {
+        int n = buildings.length;
+        List<int[]> result = new ArrayList<>();
+        if (n == 0) { return result; }
+        PriorityQueue<Item> queue = new PriorityQueue();
+        int rightMost = buildings[0][1];
+        for (int[] b : buildings) {
+            if (rightMost < b[0]) {
+                queue.offer(new Item(rightMost, b[0], 0));
             }
-        }  
-        @Override
-        public String toString () {
-            return "[" + left + "," + right + "] @ " + height;
+            queue.offer(new Item(b[0], b[1], b[2]));
+            rightMost = Math.max(rightMost, b[1]);
+        }
+
+        Item cur = queue.poll();
+        result.add(new int[]{cur.left, cur.height});
+        while (!queue.isEmpty()) {
+            Item next = queue.poll();
+            if (next.height == cur.height && next.left == cur.right) {
+                // the same height, no space
+                cur = next;
+            } else if (next.height > cur.height) {
+                // next is higher than current
+                if (next.right < cur.right) {
+                    // give the second chance to a lower height
+                    cur.left = next.right;
+                    queue.offer(cur);
+                }
+                cur = next;
+                result.add(new int[]{cur.left, cur.height});
+            } else {
+                // next is lower than current
+                if (next.left == cur.right) {
+                    // no space
+                    // this is mostly a survivor of the second chance
+                    cur = next;
+                    result.add(new int[]{cur.left, cur.height});
+                } else if (next.right > cur.right) {
+                    // give the second chance to a lower height
+                    next.left = cur.right;
+                    queue.offer(next);
+                }
+            }
+        }
+        result.add(new int[]{cur.right, 0});
+        return result;
+    }
+
+    public static void printList(List<int[]> list) {
+        for (int i = 0; i < list.size(); i++) {
+            if (i != 0) {
+                System.out.print(", ");
+            }
+            int[] ary = list.get(i);
+            System.out.print("[" + ary[0] + ", " + ary[1] + "]");
         }
     }
-    
-    public static Collection<Building> retrieveInput(InputStream is) {
-    ArrayList<Building> buildings = new ArrayList<Building>();
-    Scanner sc = new Scanner (is);
-    while (sc.hasNextLine()) {
-      String s = sc.nextLine();
-      if (s.equals("")) { break; }
 
-      try {
-        StringTokenizer st = new StringTokenizer(s);
-        int left = Integer.valueOf(st.nextToken());
-        int right = Integer.valueOf(st.nextToken());
-        int height = Integer.valueOf(st.nextToken());
+    public static void main(String[] args) {
         
-        Building b = new Building (left, right, height);
-        buildings.add(b);
-      } catch (NumberFormatException nfe) {
-        System.err.println(" ** Ignoring " + s + ": all values must be integers.");
-      } catch (Exception e) {
-        System.err.println(" ** Ignoring " + s + ": " + e.getMessage());
-      }
+        List<int[]> skyLine = new ArrayList<>();
+        int[] array = new int[3];
+        Scanner scanner = new Scanner(System.in);
+        int edificios = scanner.nextInt();
+        for(int i = 0; i < edificios; i++){
+            for(int j = 0; j < edificios; i++){
+                int datos = scanner.nextInt();
+                array[j] = datos;
+            }
+            skyLine.add(array);
+        }
+        
+        // {left, right, height}
+        /*int[][] bs0 = {
+                {1, 11, 5},
+                {2, 6, 7},
+                {3, 13, 9},
+                {12, 7, 16},
+                {14, 3, 25},
+                {19, 18, 22},
+                {23, 13, 29},
+                {24, 4, 28}
+        };
+        List<int[]> result = getSkyline(bs0);
+        printList(result);*/
     }
     
-    return (buildings);
-  }
+    public static class Item implements Comparable<Item> {
+        int left;
+        int right;
+        int height;
+
+        Item(int s, int e, int h) {
+            left = s;
+            right = e;
+            height = h;
+        }
+
+        @Override
+        public int compareTo(Item o) {
+            if (this.left == o.left) {
+                return Integer.compare(o.height, this.height);
+            } else {
+                return Integer.compare(this.left, o.left);
+            }
+        }
+    }
 }
