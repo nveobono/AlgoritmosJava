@@ -11,11 +11,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.LinkedList;
-import java.util.Queue;
 /**
  *
  * @author nveob
@@ -25,7 +20,7 @@ public class BFS {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
         String strFirstLine = sc.nextLine();
@@ -38,7 +33,7 @@ public class BFS {
 
         List<Integer>[] grafo = new List[n+1];
 
-        for (int i = 1; i<=m; i++)
+        for (int i = 1; i<=n; i++)
         {
             grafo[i] = new ArrayList<>(n);
         }
