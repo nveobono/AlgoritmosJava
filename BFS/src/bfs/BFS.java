@@ -27,24 +27,34 @@ public class BFS {
         Scanner sc = new Scanner(System.in);
         try{
             
-            System.out.println("Introduce el numero de nodos, aristas y nodo de inicio recorrido: ");
+            
+            List<Integer> g = new ArrayList<>();
+            g.add(1,2);
+            g.add(1,5);
+            g.add(2,3);
+            g.add(3,4);
+            g.add(3,5);
+            
+            BFS.breadthFirstSearch(g, 2);
+            
+            /*System.out.println("Introduce el numero de nodos, aristas y nodo de inicio recorrido: ");
             int[] datos = new int[3];
             for(int i = 0; i < datos.length; i++){
                 datos[i] = scanner.nextInt();
             }    
             System.out.println(Arrays.toString(datos));
             
-            List<Integer> nodoAristas = new ArrayList<>();
+            List<Integer> g = new ArrayList<Integer>();
             for(int i = 0; i < 2*datos[0]; i++){
                 int nodoAris = sc.nextInt();
-                nodoAristas.add(nodoAris);
+                g.add(nodoAris);
             }
             
-            nodoAristas.forEach((out) -> {
-                System.out.println("ArrayList: " + nodoAristas.get(out));
-            });
+            g.forEach((out) -> {
+                System.out.println("ArrayList: " + g.get(out));
+            });*/
                        
-                       
+            
         }catch(Exception e){
            System.out.println(e);
         }finally{
@@ -63,13 +73,15 @@ public class BFS {
         q.add(v);
         while (!q.isEmpty()) {
             int aux = q.remove();
-            for (int adj : g[aux]) {
-                if (!visited[adj]) {
-                    visited[adj] = true;
-                    traversal.add(adj);
-                    q.add(adj);
-                }
-            }
+            g[aux].stream().filter((adj) -> (!visited[adj])).map((adj) -> {
+                visited[adj] = true;
+                return adj;
+            }).map((adj) -> {
+                traversal.add(adj);
+                return adj;
+            }).forEachOrdered((adj) -> {
+                q.add(adj);
+            });
         }
         return traversal;
     }
