@@ -5,10 +5,12 @@
  */
 package skyline;
 
+import com.sun.org.apache.bcel.internal.classfile.Utility;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.Scanner;
+import java.util.TreeMap;
 
 
 
@@ -21,9 +23,30 @@ public class Skyline {
     /**
      * @param args the command line arguments
      */  
-    public static List<int[]> getSkyline(int[][] buildings) {
+    static class Item implements Comparable<Item> {
+        int left;
+        int right;
+        int height;
+
+        Item(int s, int e, int h) {
+            left = s;
+            right = e;
+            height = h;
+        }
+
+        @Override
+        public int compareTo(Item o) {
+            if (this.left == o.left) {
+                return Integer.compare(o.height, this.height);
+            } else {
+                return Integer.compare(this.left, o.left);
+            }
+        }
+    }
+
+    static List<int[]> getSkyline(int[][] buildings) {
         int n = buildings.length;
-        List<int[]> result = new ArrayList<>();
+        List<int[]> result = new ArrayList<int[]>();
         if (n == 0) { return result; }
         PriorityQueue<Item> queue = new PriorityQueue();
         int rightMost = buildings[0][1];
@@ -69,7 +92,8 @@ public class Skyline {
         return result;
     }
 
-    public static void printList(List<int[]> list) {
+    static void printList(List<int[]> list) {
+        System.out.print("[");
         for (int i = 0; i < list.size(); i++) {
             if (i != 0) {
                 System.out.print(", ");
@@ -77,55 +101,33 @@ public class Skyline {
             int[] ary = list.get(i);
             System.out.print("[" + ary[0] + ", " + ary[1] + "]");
         }
+        System.out.println("]");
     }
 
     public static void main(String[] args) {
-        
-        List<int[]> skyLine = new ArrayList<>();
-        int[] array = new int[3];
-        Scanner scanner = new Scanner(System.in);
-        int edificios = scanner.nextInt();
-        for(int i = 0; i < edificios; i++){
-            for(int j = 0; j < edificios; i++){
-                int datos = scanner.nextInt();
-                array[j] = datos;
-            }
-            skyLine.add(array);
-        }
-        
         // {left, right, height}
-        /*int[][] bs0 = {
+        int[][] bs0 = {
                 {1, 11, 5},
                 {2, 6, 7},
                 {3, 13, 9},
                 {12, 7, 16},
                 {14, 3, 25},
-                {19, 18, 22},
                 {23, 13, 29},
                 {24, 4, 28}
         };
         List<int[]> result = getSkyline(bs0);
-        printList(result);*/
-    }
-    
-    public static class Item implements Comparable<Item> {
-        int left;
-        int right;
-        int height;
+        printList(result);
 
-        Item(int s, int e, int h) {
-            left = s;
-            right = e;
-            height = h;
-        }
-
-        @Override
-        public int compareTo(Item o) {
-            if (this.left == o.left) {
-                return Integer.compare(o.height, this.height);
-            } else {
-                return Integer.compare(this.left, o.left);
-            }
-        }
+        int[][] bs1 = {
+                {1, 11, 5},
+                {2, 6, 7},
+                {3, 13, 9},
+                {12, 7, 16},
+                {14, 3, 25},
+                {23, 13, 29},
+                {24, 4, 28}     
+        };
+        result = getSkyline(bs1);
+        printList(result);
     }
 }

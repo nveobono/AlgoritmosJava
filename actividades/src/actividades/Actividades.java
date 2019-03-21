@@ -7,6 +7,7 @@ package actividades;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -25,28 +26,39 @@ public class Actividades {
         System.out.println("Numero de casos: ");
         int casos = scanner.nextInt();
         
-        ArrayList<Integer> arrayCasos = new ArrayList<>(casos);
-        ArrayList<Integer> arrayActividados = new ArrayList<>();
+        int[] arrayCasos = new int[casos];
+        List<int[]> arrayActividados = new ArrayList<>(casos);
         
-        for(int i = 0; i < casos; i++){
-            
+        for(int i = 0; i < casos; i++){         
             int suma = scanner.nextInt();
-            arrayCasos.add(suma);
-            
-            for(int j = 0; j < 2 * suma; j++){
-                
+            arrayCasos[i] = suma;
+            int[] arrays = new int[2 * arrayCasos[i]];
+            for(int j = 0; j < 2 * suma; j++){                
                 int activo = scanner.nextInt();
-                arrayActividados.add(activo);
+                arrays[j] = activo;
             }
+            arrayActividados.add(arrays);
         }
         
-        for(int i = 0; i < arrayCasos.size(); i++) {   
-            System.out.print(arrayCasos.get(i) + "");
+        for(int i = 0; i < arrayCasos.length; i++) {   
+            System.out.print(arrayCasos[i] + " ");
         } 
+        System.out.println("");
         for(int i = 0; i < arrayActividados.size(); i++) {   
-            System.out.print(arrayActividados.get(i) + "");
+            System.out.print(" " + Arrays.toString(arrayActividados.get(i)));
         } 
         
+        List<Integer> resultado = actividadesAtender(arrayActividados);
+        for(int i = 0; i < resultado.size(); i++){
+            System.out.println(resultado.get(i));
+        }
+        
+    }
+    
+    public static List<Integer> actividadesAtender(List<int[]> misActividades){
+        List<Integer> listaActividades = new ArrayList<>();
+        
+        return listaActividades;        
     }
     
 }
