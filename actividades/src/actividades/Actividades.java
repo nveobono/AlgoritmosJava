@@ -47,17 +47,30 @@ public class Actividades {
         for(int i = 0; i < arrayActividados.size(); i++) {   
             System.out.print(" " + Arrays.toString(arrayActividados.get(i)));
         } 
-        
-        List<Integer> resultado = actividadesAtender(arrayActividados);
+        System.out.println("");
+        List<Integer> resultado = actividadesAtender(arrayCasos, arrayActividados);
         for(int i = 0; i < resultado.size(); i++){
-            System.out.println(resultado.get(i));
+            System.out.println(" " + resultado.get(i));
         }
         
     }
     
-    public static List<Integer> actividadesAtender(List<int[]> misActividades){
+    public static List<Integer> actividadesAtender(int[] arrayCasos, List<int[]> misActividades){
         List<Integer> listaActividades = new ArrayList<>();
-        
+        int atender = 0;
+        for(int i = 0; i < misActividades.size(); i++){
+            try{
+                if(misActividades.get(i) == misActividades.get(i + 2)){
+                atender ++;
+            }
+            listaActividades.add(i);
+            }catch(Exception e){
+                System.err.println("Error Array");
+            }finally{
+                System.err.checkError();
+            }
+            
+        }
         return listaActividades;        
     }
     
