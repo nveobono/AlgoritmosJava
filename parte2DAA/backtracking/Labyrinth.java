@@ -53,7 +53,26 @@ public class Labyrinth {
             board[r][c] = 0;
         }
     }
-
+    
+    public static void caminos(int[][] board){
+        int camino = 0;
+        int min = 0;
+        int max = 0;
+        
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                if (board[i][j] == 0) {
+                    System.out.println("No hay solución");
+                } else if (board[i][j] < 0) {
+                   max++;
+                } else {
+                    camino++;
+                }
+            }
+        }
+        
+        System.out.println(camino);
+    }
     public static void main(String[] args) {
         int[][] board = new int[][] {
                 { 0,  0, -1,  0,  0,  0,  0, -1,  0,  0},

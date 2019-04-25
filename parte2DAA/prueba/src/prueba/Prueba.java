@@ -5,6 +5,10 @@
  */
 package prueba;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  *
  * @author nveob
@@ -14,94 +18,80 @@ public class Prueba {
     /**
      * @param args the command line arguments
      */
-    public static void printLabyrinth(int[][] board) {
-        for (int j = 0; j < board.length; j++) {
-            System.out.print("----");
+    public static boolean isPromising(List<Integer>[] graph, int[] solution, int elem, int lim) {
+        int j = 0;
+        boolean found = false;
+        while (j <= lim && !found) {
+            if (solution[j] == elem) {
+                found = true;
+            } else {
+                j++;
+            }
+        }
+        return !found;
+    }
+
+    public static void printSolution(int[] solution) {
+        for (int i = 0; i < solution.length; i++) {
+            System.out.print("[" + solution[i] + "]");
         }
         System.out.println();
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == 0) {
-                    System.out.print("|  |");
-                } else if (board[i][j] < 0) {
-                    System.out.print("|XX|");
-                } else {
-                    System.out.format("|%2d|", board[i][j]);
-                }
-            }
-            System.out.println();
-            for (int j = 0; j < board[i].length; j++) {
-                System.out.print("----");
-            }
-            System.out.println();
-        }
     }
 
-    public static boolean isFeasible(int[][] board, int r, int c) {
-        if (r < board.length && r >= 0 && c < board.length && c >= 0) {
-            return board[r][c] == 0;
-        } else {
-            return false;
-        }
-    }
-
-    public static void labyrinth(int r, int c, int k, int[][] board) {
-        board[r][c] = k;
-        if (r == board.length-1 && c == board.length-1) {
-            //printLabyrinth(board);
-            caminos(board);
-        } else {
-            if (isFeasible(board, r, c+1)) {
-                labyrinth(r, c+1, k+1, board);
-            }
-            if (isFeasible(board, r+1, c)) {
-                labyrinth(r+1, c, k+1, board);
-            }
-            if (isFeasible(board, r-1, c)) {
-                labyrinth(r-1, c, k+1, board);
-            }
-            if (isFeasible(board, r, c-1)) {
-                labyrinth(r, c-1, k+1, board);
-            }
-            board[r][c] = 0;
-        }
-    }
-    
-    public static void caminos(int[][] board){
-        int camino = 0;
-        int min = 0;
-        int max = 0;
-        
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] == 0) {
-                   min++;
-                } else if (board[i][j] < 0) {
-                   max++;
+    public static void hamiltonian(List<Integer>[] graph, int[] solution, int k) {
+        List<Integer> adjacents = new ArrayList<>(graph[solution[k - 1]]);
+        while (!adjacents.isEmpty()) {
+            int candidate = adjacents.remove(0);
+            if (isPromising(graph, solution, candidate, k - 1)) {
+                solution[k] = candidate;
+                if (k == solution.length - 1) {
+                    if (graph[candidate].contains(solution[0])) {
+                        printSolution(solution);
+                    }
                 } else {
-                    camino++;
+                    hamiltonian(graph, solution, k + 1);
                 }
+                solution[k] = -1;
             }
         }
-        
-        System.out.println(camino);
     }
 
     public static void main(String[] args) {
-        int[][] board = new int[][] {
-                { 0,  0, -1,  0,  0,  0,  0, -1,  0,  0},
-                {-1,  0, -1,  0,  0, -1, -1,  0, -1,  0},
-                { 0,  0,  0,  0,  0,  0, -1,  0, -1,  0},
-                { 0, -1,  0,  0, -1, -1, -1,  0,  0,  0},
-                { 0,  0, -1, -1,  0,  0,  0, -1,  0,  0},
-                { 0,  0,  0,  0,  0, -1,  0, -1,  0,  0},
-                {-1,  0,  0, -1, -1,  0,  0, -1,  0, -1},
-                { 0, -1, -1,  0,  0,  0,  0,  0, -1, -1},
-                {-1,  0,  0,  0,  0, -1,  0, -1, -1,  0},
-                { 0,  0, -1,  0, -1, -1,  0,  0,  0,  0}
-        };
-
-        labyrinth(0, 0, 1, board);
+        List<Integer>[] graph = new List[8];
+        for (int i = 0; i < graph.length; i++) {
+            graph[i] = new ArrayList<>();
+        }
+        graph[0].add(1);
+        graph[1].add(0);
+        graph[0].add(2);
+        graph[2].add(0);
+        graph[0].add(3);
+        graph[3].add(0);
+        graph[1].add(2);
+        graph[2].add(1);
+        graph[1].add(4);
+        graph[4].add(1);
+        graph[1].add(5);
+        graph[5].add(1);
+        graph[2].add(3);
+        graph[3].add(2);
+        graph[2].add(5);
+        graph[5].add(2);
+        graph[2].add(6);
+        graph[6].add(2);
+        graph[3].add(6);
+        graph[6].add(2);
+        graph[3].add(7);
+        graph[7].add(3);
+        graph[4].add(5);
+        graph[5].add(4);
+        graph[5].add(6);
+        graph[6].add(5);
+        graph[6].add(7);
+        graph[7].add(6);
+        int[] solution = new int[8];
+        Arrays.fill(solution, -1);
+        solution[0] = 0;
+        hamiltonian(graph, solution, 1);
     }
-    
 }
